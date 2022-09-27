@@ -1,19 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 
-"""
-Creates the list for the tickers and asks the user how many tickers they are adding. Then, tickers are added into a list
-which will be used to concatenate with the URLs. 
-"""
-
 symbols = []
 
 
-# Some explanation
+# Obtains the number of symbols the user wants to add and then compiles those symbols into a list.
 def get_symbols():
-    n = int(input("Enter the number of tickers you are adding: "))
+    n = int(input("Enter the number of stocks you are adding: "))
     for i in range(0, n):
-        symbol_input = input("Enter ticker: ")
+        symbol_input = input("Enter symbol: ")
         symbols.append(symbol_input)
 
 
@@ -25,13 +20,14 @@ def get_page(url):
     return soup
 
 
-# Some explanation
+# Iterates through the symbols list and obtains the stock price of each symbol through concatenating each symbol with the
+# yahoo URL. BeautifulSoup is then used to find the value of the stock in the HTML code.
 def get_stock_price():
     for symbol in range(len(symbols)):
         the_url = "https://finance.yahoo.com/quote/" + symbols[symbol] + "?pe" + symbols[symbol] + "&.tsrc=fin-srch"
         soup = get_page(the_url)
-        the_ticker = symbols[symbol]
-        stock_price = soup.select_one(f'fin-streamer[data-symbol="{the_ticker}"]')['value']
+        the_symbol = symbols[symbol]
+        stock_price = soup.select_one(f'fin-streamer[data-symbol="{the_symbol}"]')['value']
         print(symbols[symbol] + ": " + stock_price)
 
 
